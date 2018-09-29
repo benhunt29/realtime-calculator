@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import logo from './logo.svg'
 import './App.css'
+import { API_BASE_URL } from './constants'
 import { get } from './services/requestService'
 import { subscribe } from './services/pushserService'
 
 class App extends Component {
   componentDidMount () {
-    get('http://localhost:3001/calculations', { method: 'GET' })
+    get(`${API_BASE_URL}/calculations`, { method: 'GET' })
       .then((resp) => {
         console.log(resp)
       })
