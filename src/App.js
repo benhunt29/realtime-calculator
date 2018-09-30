@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
-import logo from './logo.svg'
-import './App.css'
+// import './App.css'
+// import { AppWrapper } from './components/styles'
 import { API_BASE_URL } from './constants'
 import { get } from './services/requestService'
 import { subscribe } from './services/pushserService'
+
+import Layout from './components/Layout'
+import CalculatorContainer from './containers/CalculatorContainer'
 
 class App extends Component {
   componentDidMount () {
@@ -21,15 +24,9 @@ class App extends Component {
 
   render () {
     return (
-      <div className='App'>
-        <header className='App-header'>
-          <img src={logo} className='App-logo' alt='logo' />
-          <h1 className='App-title'>Welcome to React</h1>
-        </header>
-        <p className='App-intro'>
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <Layout>
+        <CalculatorContainer />
+      </Layout>
     )
   }
 }

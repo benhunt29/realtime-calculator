@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "mini.css": "^3.0.0",
     "pusher-js": "^4.3.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "react-scripts": "1.1.5"
+    "react-helmet": "^5.2.0",
+    "react-scripts": "1.1.5",
+    "styled-components": "^3.4.9"
   },
   "scripts": {
     "start": "react-scripts start",
