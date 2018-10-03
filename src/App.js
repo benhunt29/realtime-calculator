@@ -9,7 +9,7 @@ class App extends Component {
     return (
       <Layout>
         <div className='row'>
-          <div className='col-sm-12 col-md-6 col-lg-3'>
+          <div className='col-sm-12 col-md-6 col-lg-4'>
             <CalculatorContainer />
           </div>
           <div className='col-sm-12 col-md-6 col-lg-4'>
