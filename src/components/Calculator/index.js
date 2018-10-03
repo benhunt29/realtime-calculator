@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 
 import CalculatorButton from '../CalculatorButton'
 import { CurrentCalculation } from './styles'
-import { validCalculation } from '../../helpers/validators'
+import { validCalculation, isOperator } from '../../helpers/validators'
+import { backspace } from '../../icons'
 
 class Calculator extends Component {
 
@@ -11,37 +12,52 @@ class Calculator extends Component {
     super(props)
     this.state = {
       calculation: '0',
-      submitDisabled: true
+      submitDisabled: true,
+      operatorsDisabled: false
     }
   }
 
   updateCalculation = (part = '') => {
     this.setState((prevState) => {
       const { calculation } = prevState
-      const newCalculation = calculation === '0' && part !== '.' ? part : `${prevState.calculation}${part}`
-      const submitDisabled = !validCalculation(newCalculation)
-      console.log('SUBMIT DISABLED: ', submitDisabled)
+      let newCalculation = `${calculation}${part}`
+      if (isOperator(calculation.substr(-1)) && isOperator(part)) {
+        newCalculation = calculation
+      } else if (calculation === '0' && part !== '.') {
+        newCalculation = part
+      }
       return {
         calculation: newCalculation,
-        submitDisabled
+        submitDisabled: !validCalculation(newCalculation)
       }
     })
   }
 
   clearCalculation = () => {
-    this.setState({calculation: '0'})
+    this.setState({calculation: '0', submitDisabled: true})
+  }
+
+  backspaceClick = () => {
+    this.setState((prevState => {
+      const { calculation: currentCalc } = prevState
+
+      const newCalc = currentCalc.substr(0, currentCalc.length - 1) || '0'
+      const submitDisabled = newCalc === '0' || !validCalculation(newCalc)
+      return {
+        calculation: newCalc,
+        submitDisabled
+      }
+    }))
   }
 
   submitCalculation = () => {
-    this.props.submitCalculation(this.state.calculation)
+    const solution = this.props.submitCalculation(this.state.calculation)
+    this.setState({calculation: solution.toString()})
   }
 
   render () {
 
     const { calculation, submitDisabled } = this.state;
-    const { submitCalculation } = this.props;
-
-    console.log(calculation)
 
     const NumberPad = (
       <Fragment>
@@ -79,11 +95,14 @@ class Calculator extends Component {
           </div>
         </div>
         <div className='row'>
-          <div className='col-sm'>
+          <div className='col-sm-4'>
             <CalculatorButton text='0' handleClick={this.updateCalculation} />
           </div>
           <div className='col-sm-4'>
             <CalculatorButton text='.' handleClick={this.updateCalculation} />
+          </div>
+          <div className='col-sm-4'>
+            <CalculatorButton text='=' variant='primary' handleClick={this.submitCalculation} disabled={submitDisabled}></CalculatorButton>
           </div>
         </div>
       </Fragment>
@@ -117,30 +136,30 @@ class Calculator extends Component {
     return (
       <Fragment>
         <div className="row">
-          <div className="col-sm-4">
+          <div className="col-sm-10">
             <CurrentCalculation>
               {calculation}
             </CurrentCalculation>
           </div>
-          <div className="col-sm-1">
-            <div className="row">
-              <div className='col-sm-12'>
-                <CalculatorButton text='clear' variant='inverse' handleClick={this.clearCalculation} />
-              </div>
-              </div>
+          <div className="col-sm-2">
+          <div className="row">
+            <div className="col-sm-12">
+              <CalculatorButton variant='tertiary' handleClick={this.backspaceClick}>{backspace}</CalculatorButton>
+            </div>
+          </div>
           </div>
         </div>
         <div className="row">
-          <div className="col-sm-4">
+          <div className="col-sm-10">
             {NumberPad}
           </div>
-          <div className="col-sm-1">
+          <div className="col-sm-2">
             {Operators}
           </div>
         </div>
         <div className="row">
-          <div className="col-sm-5">
-            <CalculatorButton text='=' variant='primary' handleClick={this.submitCalculation} disabled={submitDisabled}></CalculatorButton>
+          <div className="col-sm-12">
+            <CalculatorButton text='clear' variant='inverse' handleClick={this.clearCalculation} />
           </div>
         </div>
       </Fragment>
