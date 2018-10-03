@@ -1,4 +1,4 @@
-export const calculationRegEx = new RegExp('^([-0-9.]+)([*-+/]){1}([-0-9.]+)$')
+export const calculationRegEx = /^([-0-9.]+)([-*+/]){1}([-0-9.]+)$/
 
 export const validCalculation = (calculation = '') => {
   return calculationRegEx.test(calculation)

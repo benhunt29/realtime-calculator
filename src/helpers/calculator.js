@@ -17,7 +17,7 @@ export const calculate = (expression = '') => {
     case '-':
       solution = part1 - part2
       break
-    case '=':
+    case '+':
       solution = part1 + part2
       break
     default:
